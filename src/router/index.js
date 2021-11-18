@@ -1,27 +1,71 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+import Index from '../views/index.vue';
+import Home from '../views/home/Home';
+import Login from '../views/login/Login';
+import Register from '../views/login/Register';
+import CommodityManage from '../views/commodity/CommodityManage';
+import CommodityClassify from '../views/commodity/CommodityClassify';
+import CommodityCreate from '../views/commodity/CommodityCreate';
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [
   {
-    path: '/',
-    name: 'Home',
-    component: Home
+    path: '/login',
+    name: '登录',
+    component: Login,
+    hidden: true
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: '/register',
+    name: '注册',
+    component: Register,
+    hidden: true
+  },
+  {
+    path: '/',
+    redirect: 'home',
+    hidden: true
+  },
+  {
+    path: '/',
+    component: Index,
+    isSingle: true,
+    children: [
+      {
+        path: '/home',
+        component: Home,
+        name: '我的主页'
+      }
+    ]
+  },
+  {
+    path: '/commodity',
+    component: Index,
+    name: '我的商品',
+    children: [
+      {
+        path: 'commodityManage',
+        name: '商品管理',
+        component: CommodityManage
+      },
+      {
+        path: 'commodityClassify',
+        name: '商品分类',
+        component: CommodityClassify
+      },
+      {
+        path: 'commodityCreate',
+        name: '创建商品',
+        component: CommodityCreate
+      }
+    ]
   }
-]
+];
 
 const router = new VueRouter({
   routes
-})
+});
 
-export default router
+export default router;
