@@ -32,6 +32,7 @@ const routes = [
     path: '/',
     component: Index,
     isSingle: true,
+    icon: 'el-icon-s-home',
     children: [
       {
         path: '/home',
@@ -44,6 +45,7 @@ const routes = [
     path: '/commodity',
     component: Index,
     name: '我的商品',
+    icon: 'el-icon-s-goods',
     children: [
       {
         path: 'commodityManage',
