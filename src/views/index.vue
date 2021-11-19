@@ -16,9 +16,6 @@
           router
           unique-opened
           class="el-menu-vertical-demo"
-          background-color="#303133"
-          text-color="#fff"
-          active-text-color="#ffd04b"
         >
           <template v-for="item in navRouter">
             <el-menu-item
@@ -71,27 +68,27 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #303133;
-    border-bottom: 1px solid #545c64;
+    background-color: #409eff;
+    color: #ffffff;
+    // border-bottom: 1px solid #545c64;
   }
   .el-container {
     height: 100%;
-    background-color: #303133;
+    background-color: #ffffff;
     .el-aside {
-      // border-right: 1px solid #545c64;
       overflow: hidden;
       > .el-menu {
         border: none;
-        > li {
-          border-bottom: 1px solid #545c64;
-        }
+        // > li {
+        //   border-bottom: 1px solid #545c64;
+        // }
         .is-active.el-menu-item {
-          border-right: 2px solid #ffd04b;
+          border-left: 5px solid #409eff;
         }
       }
     }
     .el-main {
-      background-color: #545c64;
+      background-color: #ebeef5;
     }
   }
 }
