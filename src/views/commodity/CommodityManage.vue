@@ -71,6 +71,7 @@
 </template>
 
 <script>
+import { commodityQueryList } from '@/api/commodity';
 export default {
   name: 'CommodityManage',
   data() {
@@ -123,6 +124,11 @@ export default {
   methods: {
     submitForm() {},
     resetForm() {}
+  },
+  created() {
+    commodityQueryList().then((res) => {
+      console.log(res);
+    });
   }
 };
 </script>
@@ -155,7 +161,7 @@ export default {
   }
   .table {
     background-color: #ffffff;
-    padding-left:20px;
+    padding-left: 20px;
   }
   .pagination {
     display: flex;
