@@ -63,7 +63,6 @@ export default {
 
 <style lang="scss" rel="stylesheet/scss" scoped>
 .el-container {
-  height: 100%;
   .el-header {
     display: flex;
     justify-content: space-between;
@@ -73,10 +72,9 @@ export default {
     // border-bottom: 1px solid #545c64;
   }
   .el-container {
-    height: 100%;
     background-color: #ffffff;
     .el-aside {
-      overflow: hidden;
+      // overflow: hidden;
       > .el-menu {
         border: none;
         // > li {
