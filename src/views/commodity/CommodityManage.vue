@@ -94,6 +94,8 @@
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
         :current-page.sync="searchForm.page"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
       >
       </el-pagination>
     </div>
@@ -119,15 +121,33 @@ export default {
     };
   },
   methods: {
-    submitForm() {},
-    resetForm() {},
+    submitForm() {
+      this.queryList();
+    },
+    resetForm() {
+      this.searchForm = {
+        commodityName: '',
+        commodityType: '',
+        commodityStatus: '',
+        page: 1,
+        size: 10
+      };
+      this.queryList();
+    },
+    handleSizeChange(val) {
+      this.searchForm.size = val;
+      this.queryList();
+    },
+    handleCurrentChange(val) {
+      this.searchForm.page = val;
+      this.queryList();
+    },
     async queryList() {
       const params = this.searchForm;
       const res = await commodityQueryList(params);
       if (res.code === '200') {
         this.total = res.result.total;
         this.commodityData = res.result.data;
-        console.log(this.commodityData);
       } else {
         Message('error', res.message);
       }
