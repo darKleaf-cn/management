@@ -47,14 +47,18 @@
         tooltip-effect="dark"
         style="width: 100%"
         border
+        stripe
       >
         <el-table-column type="selection"> </el-table-column>
+        <el-table-column prop="commodityId" label="商品编号"></el-table-column>
         <el-table-column prop="commodityName" label="商品名称">
         </el-table-column>
-        <el-table-column label="商品状态">
+        <el-table-column label="商品状态" align="center">
           <template slot-scope="scope">
-            <span v-if="scope.row.commodityStatus">上架</span>
-            <span v-else>待上架</span>
+            <el-tag v-if="scope.row.commodityStatus" type="success"
+              >上架</el-tag
+            >
+            <el-tag v-else type="warning">待上架</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="commodityType" label="商品类型">
