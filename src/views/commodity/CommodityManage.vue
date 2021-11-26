@@ -50,8 +50,12 @@
         stripe
       >
         <el-table-column type="selection"> </el-table-column>
-        <el-table-column prop="commodityId" label="商品编号"></el-table-column>
-        <el-table-column prop="commodityName" label="商品名称">
+        <el-table-column
+          prop="commodityId"
+          label="商品编号"
+          align="center"
+        ></el-table-column>
+        <el-table-column prop="commodityName" label="商品名称" align="center">
         </el-table-column>
         <el-table-column label="商品状态" align="center">
           <template slot-scope="scope">
@@ -61,12 +65,16 @@
             <el-tag v-else type="warning">待上架</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="commodityType" label="商品类型">
+        <el-table-column prop="commodityType" label="商品类型" align="center">
         </el-table-column>
-        <el-table-column prop="commodityPrice" label="商品价格">
+        <el-table-column prop="commodityPrice" label="商品价格" align="center">
         </el-table-column>
-        <el-table-column label="商品图片"> </el-table-column>
-        <el-table-column prop="commodityDescribe" label="商品描述">
+        <el-table-column label="商品图片" align="center"> </el-table-column>
+        <el-table-column
+          prop="commodityDescribe"
+          label="商品描述"
+          align="center"
+        >
           <template slot-scope="scope">
             <span>
               {{
@@ -77,12 +85,11 @@
             </span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="100">
+        <el-table-column label="操作" width="100" align="center">
           <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row)" type="text" size="small"
-              >查看</el-button
+            <el-button type="text" size="small" @click="handleClick(scope.row)"
+              >编辑</el-button
             >
-            <el-button type="text" size="small">编辑</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -144,6 +151,9 @@ export default {
     },
     async queryList() {
       const params = this.searchForm;
+      if ((params.page - 1) * params.size > this.total) {
+        return;
+      }
       const res = await commodityQueryList(params);
       if (res.code === '200') {
         this.total = res.result.total;

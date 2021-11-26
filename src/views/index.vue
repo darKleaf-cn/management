@@ -40,7 +40,9 @@
     <el-container>
       <el-header>
         <div>
-          <el-avatar icon="el-icon-user-solid"></el-avatar>
+          <el-link icon="el-icon-user" type="info" :underline="false">你好，管理员</el-link>
+          <el-divider direction="vertical"></el-divider>
+          <el-link type="primary">退出登录</el-link>
         </div>
       </el-header>
       <el-main><router-view /></el-main>

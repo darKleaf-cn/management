@@ -1,10 +1,16 @@
 import Mock from 'mockjs';
+import getParam from '../util/getParam';
 const Random = Mock.Random;
 let list = [];
 
 export function commodityQueryList(option) {
-  const page = 1;
-  const size = 10;
+  const {
+    // commodityName,
+    // commodityStatus,
+    // commodityType,
+    page,
+    size
+  } = getParam(option.url)
   if (list.length > 0) {
     return {
       code: '200',

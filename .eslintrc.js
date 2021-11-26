@@ -17,6 +17,7 @@ module.exports = {
     'no-trailing-spaces': 'off',
     'eol-last': 'off',
     'space-before-function-paren': 'off',
-    'no-tabs': 'off'
+    'no-tabs': 'off',
+    'indent': 'off'
   }
 }
