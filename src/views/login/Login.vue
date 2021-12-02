@@ -1,7 +1,11 @@
 <template>
   <div class="login">
     <div class="login-container">
-      <h1>xxx管理系统</h1>
+      <h1>
+        <span>千</span>
+        <img src="../../assets/image/leaf-blue.png" alt="" />
+        <span>商城</span>
+      </h1>
       <el-form>
         <el-form-item prop="username">
           <el-input
@@ -71,6 +75,13 @@ export default {
     border-radius: 10%;
     border: 2px solid #409eff;
     color: #409eff;
+    h1 {
+      display: flex;
+      justify-content: center;
+      img {
+        margin: 0 5px 0 0;
+      }
+    }
     .el-form {
       .el-input {
         width: 300px;

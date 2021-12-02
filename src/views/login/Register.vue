@@ -1,12 +1,15 @@
 <template>
-	<div class="register">
+  <div class="register">
     <div class="login-container">
-      <h1>xxx管理系统</h1>
-      <el-form>
+      <h1>
+        <span>千</span>
+        <img src="../../assets/image/leaf-blue.png" alt="" />
+        <span>商城</span>
+      </h1>
+      <el-form :model="form" :rules="rules" :show-message="false">
         <el-form-item prop="username">
           <el-input
-            v-model="form.password"
-            autocomplete="off"
+            v-model="form.username"
             prefix-icon="el-icon-user"
             placeholder="请输入用户名"
           ></el-input>
@@ -15,7 +18,6 @@
           <el-input
             type="password"
             v-model="form.password"
-            autocomplete="off"
             prefix-icon="el-icon-lock"
             placeholder="请输入密码"
           ></el-input>
@@ -30,18 +32,34 @@
 
 <script>
 export default {
-	data() {
+  data() {
     return {
       form: {
         username: '',
         password: ''
+      },
+      rules: {
+        username: [
+          {
+            required: true,
+            message: '用户名不能为空',
+            trigger: 'change'
+          }
+        ],
+        password: [
+          {
+            required: true,
+            message: '密码不能为空',
+            trigger: 'change'
+          }
+        ]
       }
     };
   },
   methods: {
     submitForm() {}
   }
-}
+};
 </script>
 
 <style lang="scss">
@@ -60,6 +78,13 @@ export default {
     border-radius: 10%;
     border: 2px solid #409eff;
     color: #409eff;
+    h1 {
+      display: flex;
+      justify-content: center;
+      img {
+        margin: 0 5px 0 0;
+      }
+    }
     .el-form {
       .el-input {
         width: 300px;

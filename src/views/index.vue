@@ -2,8 +2,9 @@
   <el-container>
     <el-aside width="200px">
       <div class="logo">
-        <i class="el-icon-s-shop"></i>
-        后台管理系统
+        <span>千</span>
+        <img src='../assets/image/leaf.png' alt=''/>
+        <span>商城</span>
       </div>
       <el-menu
         :default-active="$route.path"
@@ -73,8 +74,14 @@ export default {
     background-color: #545c64;
     .logo {
       height: 60px;
-      color: #ffffff;
-      line-height: 60px;
+      color: #000000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      // font-size: 120%;
+      img {
+        margin: 0 5px 0 0;
+      }
     }
     > .el-menu {
       border: none;

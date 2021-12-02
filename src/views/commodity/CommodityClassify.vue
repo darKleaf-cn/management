@@ -1,32 +1,32 @@
 <template>
   <div class="commodity-classify">
     <div class="operation">
-      <el-input placeholder="输入关键字进行过滤">
-      </el-input>
+      <el-input placeholder="输入关键字进行过滤"> </el-input>
       <el-tree
-        :data="data"
-        show-checkbox
-        node-key="id"
-        default-expand-all
+        :data="catalogList"
+        node-key="catalogId"
         :expand-on-click-node="false"
+        :props="{ label: 'catalogName' }"
       >
-        <span class="custom-tree-node" slot-scope="{ node, data }">
-          <span>{{ node.label }}</span>
+        <span class="custom-tree-node" slot-scope="{ node }">
+          <span @click="check(node)">{{ node.label }}</span>
           <span>
-            <el-button type="text" size="mini" @click="() => append(data)">
+            <el-button type="text" size="mini" @click="() => append(node)">
               添加
             </el-button>
             <el-button
               type="text"
               size="mini"
-              @click="() => remove(node, data)"
+              style="color: #f56c6c"
+              @click="() => remove(node)"
             >
               删除
             </el-button>
             <el-button
               type="text"
               size="mini"
-              @click="() => remove(node, data)"
+              style="color: #e6a23c"
+              @click="() => update(node)"
             >
               修改
             </el-button>
@@ -34,144 +34,156 @@
         </span>
       </el-tree>
     </div>
-    <div class="form" v-show="show">
-      <el-form ref="form" :model="form" label-width="80px">
-        <el-form-item label="活动名称">
-          <el-input v-model="form.name"></el-input>
-        </el-form-item>
-        <el-form-item label="活动区域">
-          <el-select v-model="form.region" placeholder="请选择活动区域">
-            <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="活动时间">
-          <el-col :span="11">
-            <el-date-picker
-              type="date"
-              placeholder="选择日期"
-              v-model="form.date1"
-              style="width: 100%"
-            ></el-date-picker>
-          </el-col>
-          <el-col class="line" :span="2">-</el-col>
-          <el-col :span="11">
-            <el-time-picker
-              placeholder="选择时间"
-              v-model="form.date2"
-              style="width: 100%"
-            ></el-time-picker>
-          </el-col>
-        </el-form-item>
-        <el-form-item label="即时配送">
-          <el-switch v-model="form.delivery"></el-switch>
-        </el-form-item>
-        <el-form-item label="活动性质">
-          <el-checkbox-group v-model="form.type">
-            <el-checkbox label="美食/餐厅线上活动" name="type"></el-checkbox>
-            <el-checkbox label="地推活动" name="type"></el-checkbox>
-            <el-checkbox label="线下主题活动" name="type"></el-checkbox>
-            <el-checkbox label="单纯品牌曝光" name="type"></el-checkbox>
-          </el-checkbox-group>
-        </el-form-item>
-        <el-form-item label="特殊资源">
-          <el-radio-group v-model="form.resource">
-            <el-radio label="线上品牌商赞助"></el-radio>
-            <el-radio label="线下场地免费"></el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="活动形式">
-          <el-input type="textarea" v-model="form.desc"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary">提交</el-button>
-          <el-button>取消</el-button>
-        </el-form-item>
-      </el-form>
+    <div class="information">
+      <el-row>
+        <el-button type="primary">添加根类目</el-button>
+        <el-button
+          type="danger"
+          v-show="show.form"
+          @click="show.form = !show.form"
+          >关闭信息框</el-button
+        >
+      </el-row>
+      <el-row v-show="show.form">
+        <div class="form">
+          <el-form ref="form" :model="form" label-width="80px">
+            <el-form-item label="类目编号">
+              <el-input
+                v-model="form.catalogId"
+                :disabled="disabled.catalogId"
+              ></el-input>
+            </el-form-item>
+            <el-form-item label="类目名称">
+              <el-input
+                v-model="form.catalogName"
+                :disabled="disabled.catalogName"
+              ></el-input>
+            </el-form-item>
+            <el-form-item label="所处目录">
+              <template>
+                <el-cascader
+                  v-model="form.catalogRoute"
+                  :options="catalogList"
+                  @change="handleChange"
+                  :props="{
+                    value: 'catalogId',
+                    label: 'catalogName',
+                    checkStrictly: 'true'
+                  }"
+                  :disabled="disabled.catalogRoute"
+                ></el-cascader>
+              </template>
+            </el-form-item>
+
+            <el-form-item v-show="show.submit">
+              <el-button type="primary">提交</el-button>
+              <el-button>取消</el-button>
+            </el-form-item>
+          </el-form>
+        </div>
+      </el-row>
+      <el-row v-show="!show.form">
+        <el-empty description="暂无需填写信息"></el-empty>
+      </el-row>
     </div>
-    <el-empty description="暂无需填写信息" v-show="!show"></el-empty>
   </div>
 </template>
 
 <script>
-let id = 1000;
+// let id = 1000;
+import { catalogQueryList } from '@/api/commodity';
+import Message from '@/util/message';
 export default {
   data() {
-    const data = [
-      {
-        id: 1,
-        label: '一级 1',
-        children: [
-          {
-            id: 4,
-            label: '二级 1-1',
-            children: [
-              {
-                id: 9,
-                label: '三级 1-1-1'
-              },
-              {
-                id: 10,
-                label: '三级 1-1-2'
-              }
-            ]
-          }
-        ]
-      },
-      {
-        id: 2,
-        label: '一级 2',
-        children: [
-          {
-            id: 5,
-            label: '二级 2-1'
-          },
-          {
-            id: 6,
-            label: '二级 2-2'
-          }
-        ]
-      },
-      {
-        id: 3,
-        label: '一级 3',
-        children: [
-          {
-            id: 7,
-            label: '二级 3-1'
-          },
-          {
-            id: 8,
-            label: '二级 3-2'
-          }
-        ]
-      }
-    ];
     return {
-      data: JSON.parse(JSON.stringify(data)),
+      catalogList: [],
       form: {
-        
+        catalogId: '',
+        catalogName: '',
+        catalogRoute: []
       },
-      show: false
+      disabled: {
+        catalogId: false,
+        catalogName: false,
+        catalogRoute: false
+      },
+      show: {
+        form: false,
+        submit: false
+      }
     };
   },
 
   methods: {
-    append(data) {
-      this.show = !this.show;
-      const newChild = { id: id++, label: 'testtest', children: [] };
-      if (!data.children) {
-        this.$set(data, 'children', []);
-      }
-      data.children.push(newChild);
+    append(node) {
+      this.show.form = true;
+      this.show.submit = true;
+      this.form = {
+        catalogId: '',
+        catalogName: '',
+        catalogRoute: this.getRoute(node)
+      };
+      this.disabled = {
+        catalogId: true,
+        catalogName: false,
+        catalogRoute: false
+      };
     },
 
-    remove(node, data) {
-      const parent = node.parent;
-      const children = parent.data.children || parent.data;
-      const index = children.findIndex((d) => d.id === data.id);
-      children.splice(index, 1);
+    remove(node) {
+      console.log(node);
+    },
+    update(node) {
+      this.show.form = true;
+      this.show.submit = true;
+      this.form = {
+        catalogId: node.data.catalogId,
+        catalogName: node.data.catalogName,
+        catalogRoute: this.getRoute(node)
+      };
+      this.disabled = {
+        catalogId: true,
+        catalogName: false,
+        catalogRoute: true
+      };
+    },
+    handleChange(value) {
+      console.log(value);
+    },
+    check(node) {
+      this.show.form = true;
+      this.show.submit = false;
+      this.form = {
+        catalogId: node.data.catalogId,
+        catalogName: node.data.catalogName,
+        catalogRoute: this.getRoute(node)
+      };
+      this.disabled = {
+        catalogId: true,
+        catalogName: true,
+        catalogRoute: true
+      };
+    },
+    getRoute(node, arr = []) {
+      if (node.parent === null) {
+        return arr;
+      }
+      arr.unshift(node.data.catalogId);
+      return this.getRoute(node.parent, arr);
+    },
+    async queryList() {
+      const res = await catalogQueryList();
+      console.log(res);
+      if (res.code === '200') {
+        this.total = res.result.total;
+        this.catalogList = res.result.data;
+      } else {
+        Message('error', res.message);
+      }
     }
+  },
+  created() {
+    this.queryList();
   }
 };
 </script>
@@ -180,22 +192,44 @@ export default {
 .commodity-classify {
   display: flex;
   height: 100%;
+  justify-content: center;
   .operation {
     width: auto;
     margin-right: 20px;
     background-color: #ffffff;
     padding: 20px;
+    overflow-y: auto;
     .el-input {
       margin-bottom: 20px;
     }
+    .custom-tree-node {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 14px;
+      padding-right: 8px;
+      > span {
+        &:last-child {
+          margin-left: 50px;
+        }
+      }
+    }
   }
-  .form {
+  .information {
     flex: 1;
-    background-color: #ffffff;
-    padding: 20px;
-  }
-  .el-empty {
-    flex: 1;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    .el-row {
+      background-color: #ffffff;
+      margin-bottom: 20px;
+      padding: 20px;
+      &:last-child {
+        flex: 1;
+        margin-bottom: 0;
+      }
+    }
   }
 }
 </style>

@@ -1,7 +1,8 @@
 import Mock from 'mockjs';
 import getParam from '../util/getParam';
 const Random = Mock.Random;
-let list = [];
+// let commodityList = [];
+export let commodityList = [];
 
 export function commodityQueryList(option) {
   const {
@@ -11,18 +12,18 @@ export function commodityQueryList(option) {
     page,
     size
   } = getParam(option.url)
-  if (list.length > 0) {
+  if (commodityList.length > 0) {
     return {
       code: '200',
       message: 'success',
       result: {
-        total: list.length,
-        data: list.slice((page - 1) * size, page * size)
+        total: commodityList.length,
+        data: commodityList.slice((page - 1) * size, page * size)
       }
     }
   }
   const data = Mock.mock({
-    'list|30-50': [{
+    'commodityList|30-50': [{
       'commodityId|1': '@id',
       'commodityName|1': '@ctitle',
       'commodityStatus|1': '@boolean',
@@ -37,13 +38,13 @@ export function commodityQueryList(option) {
       'commodityDescribe|1': '@cparagraph'
     }]
   });
-  list = data.list;
+  commodityList = data.commodityList;
   return {
     code: '200',
     message: 'success',
     result: {
-      total: list.length,
-      data: list.slice((page - 1) * size, page * size)
+      total: commodityList.length,
+      data: commodityList.slice((page - 1) * size, page * size)
     }
   };
 }

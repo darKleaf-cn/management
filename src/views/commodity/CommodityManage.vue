@@ -13,13 +13,16 @@
         ></el-input>
       </el-form-item>
       <el-form-item label="商品类型">
-        <el-select
-          v-model="searchForm.commodityType"
-          placeholder="请选择商品类型"
-        >
-          <el-option label="区域一" value="shanghai"></el-option>
-          <el-option label="区域二" value="beijing"></el-option>
-        </el-select>
+        <el-cascader
+          v-model="searchForm.commodityCatalog"
+          :options="catalogList"
+          :props="{
+            value: 'catalogId',
+            label: 'catalogName',
+            checkStrictly: 'true'
+          }"
+          :show-all-levels="false"
+        ></el-cascader>
       </el-form-item>
       <el-form-item label="商品状态">
         <el-select
@@ -65,7 +68,11 @@
             <el-tag v-else type="warning">待上架</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="commodityType" label="商品类型" align="center">
+        <el-table-column
+          prop="commodityCatalog"
+          label="商品类目"
+          align="center"
+        >
         </el-table-column>
         <el-table-column prop="commodityPrice" label="商品价格" align="center">
         </el-table-column>
@@ -110,7 +117,7 @@
 </template>
 
 <script>
-import { commodityQueryList } from '@/api/commodity';
+import { commodityQueryList, catalogQueryList } from '@/api/commodity';
 import Message from '@/util/message';
 export default {
   name: 'CommodityManage',
@@ -118,13 +125,14 @@ export default {
     return {
       searchForm: {
         commodityName: '',
-        commodityType: '',
+        commodityCatalog: '',
         commodityStatus: '',
         page: 1,
         size: 10
       },
       total: 0,
-      commodityData: []
+      commodityData: [],
+      catalogList: []
     };
   },
   methods: {
@@ -161,9 +169,18 @@ export default {
       } else {
         Message('error', res.message);
       }
+    },
+    async queryCatalogList() {
+      const res = await catalogQueryList();
+      if (res.code === '200') {
+        this.catalogList = res.result.data;
+      } else {
+        Message('error', res.message);
+      }
     }
   },
   created() {
+    this.queryCatalogList();
     this.queryList();
   }
 };
