@@ -2,11 +2,11 @@
   <div class="register">
     <div class="login-container">
       <h1>
-        <span>千</span>
+        <span>千叶</span>
         <img src="../../assets/image/leaf-blue.png" alt="" />
         <span>商城</span>
       </h1>
-      <el-form :model="form" :rules="rules" :show-message="false">
+      <el-form ref="form" :model="form" :rules="rules" :show-message="false">
         <el-form-item prop="username">
           <el-input
             v-model="form.username"
@@ -31,6 +31,12 @@
 </template>
 
 <script>
+import { JSEncrypt } from 'jsencrypt';
+import { publicKey } from '@/util/publicKey';
+import MD5 from 'crypto-js/md5';
+import Message from '@/util/message';
+import { register } from '@/api/user';
+
 export default {
   data() {
     return {
@@ -57,7 +63,33 @@ export default {
     };
   },
   methods: {
-    submitForm() {}
+    submitForm() {
+      this.$refs.form.validate(async (valid) => {
+        if (valid) {
+          const username = this.form.username;
+          const password = this.form.password;
+          
+          // md5加密和公钥加密
+          const encryptor = new JSEncrypt();
+          encryptor.setPublicKey(publicKey);
+          const params = {
+            username,
+            password: encryptor.encrypt(MD5(password).toString())
+          };
+          const res = await register(params);
+          if (res.code === 200) {
+            Message('success', '注册成功');
+            this.$router.push({
+              path: '/login'
+            });
+          } else {
+            Message('error', res.message);
+          }
+        } else {
+          Message('error', '注册失败');
+        }
+      });
+    }
   }
 };
 </script>
@@ -82,7 +114,7 @@ export default {
       display: flex;
       justify-content: center;
       img {
-        margin: 0 5px 0 0;
+        margin: 0 5px;
       }
     }
     .el-form {

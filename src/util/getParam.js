@@ -1,3 +1,4 @@
+// 获取url中的参数
 export default function (url) {
   const arr = url.split(/\?|&/);
   arr.shift();

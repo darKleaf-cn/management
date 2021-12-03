@@ -2,7 +2,7 @@
   <div class="login">
     <div class="login-container">
       <h1>
-        <span>千</span>
+        <span>千叶</span>
         <img src="../../assets/image/leaf-blue.png" alt="" />
         <span>商城</span>
       </h1>
@@ -79,7 +79,7 @@ export default {
       display: flex;
       justify-content: center;
       img {
-        margin: 0 5px 0 0;
+        margin: 0 5px;
       }
     }
     .el-form {
