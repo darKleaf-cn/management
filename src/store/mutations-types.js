@@ -1,3 +1,2 @@
+export const SET_USERID = 'SET_USERID';
 export const SET_USERNAME = 'SET_USERNAME';
-export const SET_PASSWORD = 'SET_PASSWORD';
-export const SET_AUTHORIZATION = 'SET_AUTHORIZATION';

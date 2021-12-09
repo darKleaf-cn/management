@@ -1,7 +1,7 @@
 import Mock from 'mockjs'; // 引入mockjs
 import { commodityQueryList } from './commodity';
 import { catalogQueryList } from './catalog';
-import { register } from './user';
+import { register, login } from './user';
 
 Mock.setup({
   timeout: '300-600'
@@ -15,5 +15,6 @@ Mock.mock(/\/catalog\/queryList/, 'get', catalogQueryList);
 
 // 用户相关
 Mock.mock(/\/user\/register/, 'post', register);
+Mock.mock(/\/user\/login/, 'post', login);
 
 export default Mock;

@@ -6,10 +6,10 @@
         <img src="../../assets/image/leaf-blue.png" alt="" />
         <span>商城</span>
       </h1>
-      <el-form>
+      <el-form ref="form" :model="form" :rules="rules" :show-message="false">
         <el-form-item prop="username">
           <el-input
-            v-model="form.password"
+            v-model="form.username"
             autocomplete="off"
             prefix-icon="el-icon-user"
             placeholder="请输入用户名"
@@ -26,7 +26,7 @@
         </el-form-item>
         <el-form-item class="password-operation">
           <template>
-            <el-checkbox>记住密码</el-checkbox>
+            <el-checkbox v-model="checked">记住密码</el-checkbox>
             <el-link :underline="false">忘记密码？</el-link>
           </template>
         </el-form-item>
@@ -44,17 +44,82 @@
 </template>
 
 <script>
+import { JSEncrypt } from 'jsencrypt';
+import { publicKey } from '@/util/publicKey';
+import MD5 from 'crypto-js/md5';
+import Message from '@/util/message';
+import { login } from '@/api/user';
+// import Base64 from '@/util/base64';
+import { setStore } from '@/util/storage';
+
 export default {
   data() {
     return {
       form: {
         username: '',
         password: ''
-      }
+      },
+      rules: {
+        username: [
+          {
+            required: true,
+            message: '用户名不能为空',
+            trigger: 'change'
+          }
+        ],
+        password: [
+          {
+            required: true,
+            message: '密码不能为空',
+            trigger: 'change'
+          }
+        ]
+      },
+      checked: false
     };
   },
   methods: {
-    submitForm() {}
+    submitForm() {
+      this.$refs.form.validate(async (valid) => {
+        if (valid) {
+          const username = this.form.username;
+          const password = this.form.password;
+
+          // md5加密和公钥加密
+          const encryptor = new JSEncrypt();
+          encryptor.setPublicKey(publicKey);
+          const params = {
+            username,
+            password: encryptor.encrypt(MD5(password).toString())
+          };
+          const res = await login(params);
+          if (res.code === 200) {
+            Message('success', '登录成功');
+            // if (this.checked) {
+            //   setStore('username', Base64.encode(username));
+            //   setStore('password', Base64.encode(password));
+            // }
+            setStore('token', res.token);
+            this.$router.push({
+              path: '/home'
+            });
+          } else {
+            Message('error', res.message);
+          }
+        } else {
+          console.log(1);
+        }
+      });
+    }
+  },
+  created() {
+    // const username = getStore('username');
+    // const password = getStore('password');
+    // if (username && password) {
+    //   this.checked = true;
+    //   this.form.username = Base64.decode(username);
+    //   this.form.password = Base64.decode(password);
+    // }
   }
 };
 </script>

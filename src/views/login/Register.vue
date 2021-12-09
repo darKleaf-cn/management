@@ -68,7 +68,7 @@ export default {
         if (valid) {
           const username = this.form.username;
           const password = this.form.password;
-          
+
           // md5加密和公钥加密
           const encryptor = new JSEncrypt();
           encryptor.setPublicKey(publicKey);
@@ -85,8 +85,6 @@ export default {
           } else {
             Message('error', res.message);
           }
-        } else {
-          Message('error', '注册失败');
         }
       });
     }

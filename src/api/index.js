@@ -11,8 +11,8 @@ axios.defaults.baseURL = process.env.VUE_APP_URL;
 // 请求之前添加token
 axios.interceptors.request.use(
   config => {
-    if (localStorage.getItem('Authorization')) {
-      config.headers.Authorization = getStore('Authorization');
+    if (localStorage.getItem('token')) {
+      config.headers.Authorization = getStore('token');
     }
     return config;
   },

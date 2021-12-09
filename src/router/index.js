@@ -2,11 +2,15 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Index from '../views/index.vue';
 import Home from '../views/home/Home';
+
 import Login from '../views/login/Login';
 import Register from '../views/login/Register';
+
 import CommodityManage from '../views/commodity/CommodityManage';
 import CommodityClassify from '../views/commodity/CommodityClassify';
 import CommodityCreate from '../views/commodity/CommodityCreate';
+
+import OrderManage from '../views/order/OrderManage';
 
 Vue.use(VueRouter);
 
@@ -61,6 +65,19 @@ const routes = [
         path: 'commodityCreate',
         name: '创建商品',
         component: CommodityCreate
+      }
+    ]
+  },
+  {
+    path: '/order',
+    component: Index,
+    name: '我的订单',
+    icon: 'el-icon-s-order',
+    children: [
+      {
+        path: 'orderManage',
+        name: '订单管理',
+        component: OrderManage
       }
     ]
   }

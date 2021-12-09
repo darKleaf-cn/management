@@ -1,4 +1,5 @@
 const state = {
+	userId: '',
   username: '',
 	password: '',
 	Authorization: ''
