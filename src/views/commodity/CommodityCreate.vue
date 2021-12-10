@@ -23,6 +23,11 @@
         <el-input v-model="form.commodityPrice" type="number"></el-input>
       </el-form-item>
       <el-form-item label="商品图片" align="center"> </el-form-item>
+      <el-form-item label="商品信息">
+        <template>
+          <Editor />
+        </template>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submit">立即创建</el-button>
         <el-button @click="reset">重置</el-button>
@@ -32,6 +37,7 @@
 </template>
 
 <script>
+import Editor from '@/components/Editor.vue';
 export default {
   data() {
     return {
@@ -48,6 +54,9 @@ export default {
   methods: {
     submit() {},
     reset() {}
+  },
+  components: {
+    Editor
   }
 };
 </script>

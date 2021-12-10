@@ -10,7 +10,7 @@
         router
         unique-opened
         class="el-menu-vertical-demo"
-        background-color="#545c64"
+        background-color="#30353a"
         text-color="#fff"
         active-text-color="#409eff"
       >
@@ -70,7 +70,7 @@ export default {
 .el-container {
   height: 100%;
   .el-aside {
-    background-color: #545c64;
+    background-color: #30353a;
     .logo {
       height: 60px;
       color: #409EFF;

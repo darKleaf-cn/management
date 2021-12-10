@@ -56,28 +56,41 @@
         <el-table-column
           prop="orderId"
           label="订单号"
-          align="center"
+          
         ></el-table-column>
         <el-table-column
           prop="orderDate"
           label="订单时间"
-          align="center"
+          
         ></el-table-column>
-        <el-table-column prop="orderCommodityName" label="商品" align="center">
+        <el-table-column prop="orderCommodityName" label="商品" >
           <template></template>
         </el-table-column>
-        <el-table-column label="订单状态" align="center">
+        <el-table-column label="订单状态"  width="100">
           <template slot-scope="scope">
-            <el-tag v-if="scope.row.orderStatus" type="success">上架</el-tag>
-            <el-tag v-else type="warning">待上架</el-tag>
+            <el-tag v-if="scope.row.orderStatus === 1" type="success"
+              >待付款</el-tag
+            >
+            <el-tag v-else-if="scope.row.orderStatus === 2" type="success"
+              >待发货</el-tag
+            >
+            <el-tag v-else-if="scope.row.orderStatus === 3" type="success"
+              >配送中</el-tag
+            >
+            <el-tag v-else type="warning">已收货</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="orderPrice" label="订单价格" align="center">
+        <el-table-column prop="orderPrice" label="订单价格"  width="100">
         </el-table-column>
-        <el-table-column label="收货信息" align="center">
-          <template></template>
+        <el-table-column label="收货信息" width="400">
+          <template>
+            <strong>湖北省武汉市光谷大道xx花园1栋2单元</strong><br/>
+            <span>王先生</span>
+            <el-divider direction="vertical"></el-divider>
+            <span>13023922329</span>
+          </template>
         </el-table-column>
-        <el-table-column label="操作" width="100" align="center">
+        <el-table-column label="操作" width="100" >
           <template slot-scope="scope">
             <el-button type="text" size="small" @click="handleClick(scope.row)"
               >编辑</el-button
@@ -102,7 +115,7 @@
 </template>
 
 <script>
-import { commodityQueryList, catalogQueryList } from '@/api/commodity';
+import { orderQueryList } from '@/api/order';
 import Message from '@/util/message';
 export default {
   name: 'CommodityManage',
@@ -116,8 +129,7 @@ export default {
         size: 10
       },
       total: 0,
-      orderData: [],
-      catalogList: []
+      orderData: []
     };
   },
   methods: {
@@ -126,9 +138,9 @@ export default {
     },
     resetForm() {
       this.searchForm = {
-        commodityName: '',
-        commodityType: '',
-        commodityStatus: '',
+        orderId: '',
+        orderDate: '',
+        orderStatus: '',
         page: 1,
         size: 10
       };
@@ -147,25 +159,17 @@ export default {
       if ((params.page - 1) * params.size > this.total) {
         return;
       }
-      const res = await commodityQueryList(params);
+      const res = await orderQueryList(params);
       if (res.code === '200') {
         this.total = res.result.total;
         this.orderData = res.result.data;
-      } else {
-        Message('error', res.message);
-      }
-    },
-    async queryCatalogList() {
-      const res = await catalogQueryList();
-      if (res.code === '200') {
-        this.catalogList = res.result.data;
+        console.log(this.orderData);
       } else {
         Message('error', res.message);
       }
     }
   },
   created() {
-    this.queryCatalogList();
     this.queryList();
   }
 };
