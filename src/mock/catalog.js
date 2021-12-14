@@ -9,7 +9,7 @@ export function catalogQueryList(option) {
     return {
       code: '200',
       message: 'success',
-      result: {
+      data: {
         total: catalogList.length,
         data: catalogList
       }
@@ -56,7 +56,7 @@ export function catalogQueryList(option) {
   return {
     code: '200',
     message: 'success',
-    result: {
+    data: {
       total: catalogList.length,
       data: catalogList
     }

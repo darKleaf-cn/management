@@ -49,8 +49,7 @@ import { publicKey } from '@/util/publicKey';
 import MD5 from 'crypto-js/md5';
 import Message from '@/util/message';
 import { login } from '@/api/user';
-// import Base64 from '@/util/base64';
-import { setStore } from '@/util/storage';
+import { mapMutations } from 'vuex';
 
 export default {
   data() {
@@ -79,6 +78,7 @@ export default {
     };
   },
   methods: {
+    ...mapMutations(['SET_USER']),
     submitForm() {
       this.$refs.form.validate(async (valid) => {
         if (valid) {
@@ -95,11 +95,7 @@ export default {
           const res = await login(params);
           if (res.code === 200) {
             Message('success', '登录成功');
-            // if (this.checked) {
-            //   setStore('username', Base64.encode(username));
-            //   setStore('password', Base64.encode(password));
-            // }
-            setStore('token', res.token);
+            this.SET_USER(res.data);
             this.$router.push({
               path: '/home'
             });
@@ -111,15 +107,6 @@ export default {
         }
       });
     }
-  },
-  created() {
-    // const username = getStore('username');
-    // const password = getStore('password');
-    // if (username && password) {
-    //   this.checked = true;
-    //   this.form.username = Base64.decode(username);
-    //   this.form.password = Base64.decode(password);
-    // }
   }
 };
 </script>

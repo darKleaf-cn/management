@@ -1,11 +1,11 @@
 import * as types from './mutations-types';
+import { setStore } from '@/util/storage';
+import { encode } from 'js-base64';
 
 const mutations = {
-  [types.SET_USERID](state, payload) {
-    state.userId = payload;
-  },
-  [types.SET_USERNAME](state, payload) {
-    state.username = payload;
+  [types.SET_USER](state, payload) {
+    state = payload;
+    setStore('user', encode(JSON.stringify(payload)));
   }
 };
 

@@ -16,7 +16,7 @@ export function commodityQueryList(option) {
     return {
       code: '200',
       message: 'success',
-      result: {
+      data: {
         total: commodityList.length,
         data: commodityList.slice((page - 1) * size, page * size)
       }
@@ -42,7 +42,7 @@ export function commodityQueryList(option) {
   return {
     code: '200',
     message: 'success',
-    result: {
+    data: {
       total: commodityList.length,
       data: commodityList.slice((page - 1) * size, page * size)
     }

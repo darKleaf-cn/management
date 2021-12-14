@@ -161,8 +161,8 @@ export default {
       }
       const res = await orderQueryList(params);
       if (res.code === '200') {
-        this.total = res.result.total;
-        this.orderData = res.result.data;
+        this.total = res.data.total;
+        this.orderData = res.data.data;
         console.log(this.orderData);
       } else {
         Message('error', res.message);

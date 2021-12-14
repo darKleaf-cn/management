@@ -4,7 +4,7 @@
 // let catalogList = [];
 
 export function uploadImage(option) {
-	const data = option.body.FormData;
+	const data = option;
 	console.log(data);
 	return {
 		

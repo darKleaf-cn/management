@@ -1,8 +1,6 @@
 import axios from 'axios';
 import router from '@/router/index';
-import {
-  getStore
-} from '@/util/storage';
+import store from '../store';
 
 axios.defaults.timeout = 10000;
 axios.defaults.headers.post['Content-Type'] = 'application/x-www=form-urlencoded';
@@ -11,8 +9,8 @@ axios.defaults.baseURL = process.env.VUE_APP_URL;
 // 请求之前添加token
 axios.interceptors.request.use(
   config => {
-    if (localStorage.getItem('token')) {
-      config.headers.Authorization = getStore('token');
+    if (store.state.token) {
+      config.headers.Authorization = store.state.token;
     }
     return config;
   },

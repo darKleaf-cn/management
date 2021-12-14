@@ -16,7 +16,7 @@ export function orderQueryList(option) {
     return {
       code: '200',
       message: 'success',
-      result: {
+      data: {
         total: orderList.length,
         data: orderList.slice((page - 1) * size, page * size)
       }
@@ -43,7 +43,7 @@ export function orderQueryList(option) {
   return {
     code: '200',
     message: 'success',
-    result: {
+    data: {
       total: orderList.length,
       data: orderList.slice((page - 1) * size, page * size)
     }

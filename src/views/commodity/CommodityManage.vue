@@ -12,7 +12,7 @@
           placeholder="请输入商品名称"
         ></el-input>
       </el-form-item>
-      <el-form-item label="商品类型">
+      <el-form-item label="商品类目">
         <el-cascader
           v-model="searchForm.commodityCatalog"
           :options="catalogList"
@@ -69,7 +69,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          prop="commodityCatalog"
+          prop="commodityCatalogName"
           label="商品类目"
           align="center"
         >
@@ -164,8 +164,8 @@ export default {
       }
       const res = await commodityQueryList(params);
       if (res.code === '200') {
-        this.total = res.result.total;
-        this.commodityData = res.result.data;
+        this.total = res.data.total;
+        this.commodityData = res.data.data;
       } else {
         Message('error', res.message);
       }
@@ -173,7 +173,7 @@ export default {
     async queryCatalogList() {
       const res = await catalogQueryList();
       if (res.code === '200') {
-        this.catalogList = res.result.data;
+        this.catalogList = res.data.data;
       } else {
         Message('error', res.message);
       }
