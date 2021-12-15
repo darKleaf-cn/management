@@ -9,10 +9,7 @@ export function catalogQueryList(option) {
     return {
       code: '200',
       message: 'success',
-      data: {
-        total: catalogList.length,
-        data: catalogList
-      }
+      data: catalogList
     }
   }
   // const data = Mock.mock({
@@ -56,9 +53,6 @@ export function catalogQueryList(option) {
   return {
     code: '200',
     message: 'success',
-    data: {
-      total: catalogList.length,
-      data: catalogList
-    }
+    data: catalogList
   };
 }

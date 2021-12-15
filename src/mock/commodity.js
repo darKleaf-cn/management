@@ -18,7 +18,7 @@ export function commodityQueryList(option) {
       message: 'success',
       data: {
         total: commodityList.length,
-        data: commodityList.slice((page - 1) * size, page * size)
+        commodityList: commodityList.slice((page - 1) * size, page * size)
       }
     }
   }
@@ -44,7 +44,7 @@ export function commodityQueryList(option) {
     message: 'success',
     data: {
       total: commodityList.length,
-      data: commodityList.slice((page - 1) * size, page * size)
+      commodityList: commodityList.slice((page - 1) * size, page * size)
     }
   };
 }

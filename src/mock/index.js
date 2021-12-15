@@ -1,7 +1,7 @@
 import Mock from 'mockjs'; // 引入mockjs
 import { commodityQueryList } from './commodity';
 import { catalogQueryList } from './catalog';
-import { register, login } from './user';
+import { register, login, logout } from './user';
 import { uploadImage } from './image';
 import { orderQueryList } from './order';
 
@@ -18,6 +18,7 @@ Mock.mock(/\/catalog\/queryList/, 'get', catalogQueryList);
 // 用户相关
 Mock.mock(/\/user\/register/, 'post', register);
 Mock.mock(/\/user\/login/, 'post', login);
+Mock.mock(/\/user\/logout/, 'post', logout);
 
 // 图片相关
 Mock.mock(/\/upload-img/, 'post', uploadImage);

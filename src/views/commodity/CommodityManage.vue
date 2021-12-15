@@ -14,7 +14,7 @@
       </el-form-item>
       <el-form-item label="商品类目">
         <el-cascader
-          v-model="searchForm.commodityCatalog"
+          v-model="searchForm.commodityCatalogId"
           :options="catalogList"
           :props="{
             value: 'catalogId',
@@ -41,7 +41,7 @@
     <div class="operation">
       <el-button type="primary" icon="el-icon-upload2">上架</el-button>
       <el-button type="primary" icon="el-icon-download">下架</el-button>
-      <el-button type="danger" icon="el-icon-edit">删除</el-button>
+      <el-button type="danger" icon="el-icon-delete">删除</el-button>
     </div>
     <div class="table">
       <el-table
@@ -93,10 +93,8 @@
           </template>
         </el-table-column>
         <el-table-column label="操作" width="100" align="center">
-          <template slot-scope="scope">
-            <el-button type="text" size="small" @click="handleClick(scope.row)"
-              >编辑</el-button
-            >
+          <template>
+						<el-button type="text" size="small">查看 / 编辑</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -119,13 +117,14 @@
 <script>
 import { commodityQueryList, catalogQueryList } from '@/api/commodity';
 import Message from '@/util/message';
+import { mapState } from 'vuex';
 export default {
   name: 'CommodityManage',
   data() {
     return {
       searchForm: {
         commodityName: '',
-        commodityCatalog: '',
+        commodityCatalogId: '',
         commodityStatus: '',
         page: 1,
         size: 10
@@ -142,7 +141,7 @@ export default {
     resetForm() {
       this.searchForm = {
         commodityName: '',
-        commodityType: '',
+        commodityCatalogId: '',
         commodityStatus: '',
         page: 1,
         size: 10
@@ -158,14 +157,20 @@ export default {
       this.queryList();
     },
     async queryList() {
-      const params = this.searchForm;
+      const params = {
+        userId: this.userId,
+        ...this.searchForm
+      };
+      console.log(params);
+
+      // 切换分页size时处理不合理参数
       if ((params.page - 1) * params.size > this.total) {
         return;
       }
       const res = await commodityQueryList(params);
       if (res.code === '200') {
         this.total = res.data.total;
-        this.commodityData = res.data.data;
+        this.commodityData = res.data.commodityList;
       } else {
         Message('error', res.message);
       }
@@ -173,11 +178,14 @@ export default {
     async queryCatalogList() {
       const res = await catalogQueryList();
       if (res.code === '200') {
-        this.catalogList = res.data.data;
+        this.catalogList = res.data;
       } else {
         Message('error', res.message);
       }
     }
+  },
+  computed: {
+    ...mapState(['userId'])
   },
   created() {
     this.queryCatalogList();

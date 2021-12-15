@@ -139,15 +139,15 @@
 
 #### 2.1.1 请求参数
 
-| 参数名称               | 类型   | 必要   | 描述                                    |
-| :--------------------- | :----- | :----- | :-------------------------------------- |
-| Header                 | &nbsp; | 必要   | 请求报文头                              |
-| &emsp;Authorization    | string | 必要   | 验证用户登录后token，没有登录则无该字段 |
-| body                   | &nbsp; | 必要   | &nbsp;                                  |
-| &emsp;userId           | string | 必要   | 用户id                                  |
-| &emsp;commodityName    | string | 不必要 | 商品名称(模糊查询)                      |
-| &emsp;commodityCatalog | string | 不必要 | 商品类目(查询)                          |
-| &emsp;commodityStatus  | string | 不必要 | 商品状态(上架1/待上架0)                 |
+| 参数名称                 | 类型   | 必要   | 描述                                    |
+| :----------------------- | :----- | :----- | :-------------------------------------- |
+| Header                   | &nbsp; | 必要   | 请求报文头                              |
+| &emsp;Authorization      | string | 必要   | 验证用户登录后token，没有登录则无该字段 |
+| body                     | &nbsp; | 必要   | &nbsp;                                  |
+| &emsp;userId             | string | 必要   | 用户id                                  |
+| &emsp;commodityName      | string | 不必要 | 商品名称(模糊查询)                      |
+| &emsp;commodityCatalogId | array  | 不必要 | 商品类目(查询) 从左到右父子排列         |
+| &emsp;commodityStatus    | string | 不必要 | 商品状态(上架1/待上架0)                 |
 
 请求实例：
 
@@ -155,7 +155,7 @@
 {
 	userId: "123123123",
 	commodityName: "手机",
-	commodityCatalog: "2323123",
+	commodityCatalogId: ["2323123","23213132"]
 	commodityStatus: "1"
 }
 ```

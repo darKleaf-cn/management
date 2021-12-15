@@ -175,8 +175,7 @@ export default {
       const res = await catalogQueryList();
       console.log(res);
       if (res.code === '200') {
-        this.total = res.data.total;
-        this.catalogList = res.data.data;
+        this.catalogList = res.data;
       } else {
         Message('error', res.message);
       }

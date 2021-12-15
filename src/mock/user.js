@@ -56,3 +56,10 @@ export function login(option) {
     }
   }
 }
+
+export function logout(option) {
+  return {
+    code: 200,
+    message: 'success'
+  };
+}
